@@ -1,0 +1,37 @@
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>iBarchart</title>
+</head>
+
+<body>
+  <h2>Welcome to Montreal's Meteor Hackathon!</h2>
+	<div class="row">
+		<div class="col-xs-3">
+		  {{> dashboard}}
+		</div>
+
+		<div class="col-xs-9">
+			{{> barchart}}
+		</div>
+	</div>
+</body>
+
+<template name="dashboard">
+	<div class="addScore">
+		<h4>Add new score</h4>
+		Score:
+		<input type="number" id="adding-score" value="">
+	</div>
+
+	<div class="selectScore">
+		<h4>Select</h4>
+		Score: 
+		<input type="number" id="edited" value="{{selected.score}}">
+		<button type="button" id="removing" class="btn btn-danger">Remove</button>
+	</div>
+
+</template>
+
+<template name="barchart">
+	<svg id="barChart"></svg>
+</template>
