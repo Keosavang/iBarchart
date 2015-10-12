@@ -17,11 +17,14 @@ if (Meteor.isClient) {
     'keyup #edited': function (e, t) {
       if (e.which === 13) {
         Bars.update({_id: Session.get('currentBar')}, {score: e.target.value});
+        e.target.value = null;
+        Session.set('currentBar', null);
       }
     },
     'keyup #adding-score': function(e, t) {
       if (e.which === 13) {
         Bars.insert({score: e.target.value});
+        e.target.value = null;
       }
     },
     'click #removing': function() {
@@ -56,14 +59,20 @@ if (Meteor.isClient) {
 
       xScale.domain([0, d3.max(dataset, function(d) { return d.score; })]);
 
-      var bar = svg.selectAll('rect')
-        .data(dataset, key);
+      svg.selectAll('g').remove();
 
-        bar.enter()
-          .append('rect')
-            .attr('transform', function(d, i) {
-                return 'translate(0, '+ i * barHeight +')';
-            })          
+      var bar = svg.selectAll('g').data(dataset, key);
+              
+        bar.enter().append('g')
+          .attr('transform', function(d, i) {
+              return 'translate(0, '+ i * barHeight +')';
+          });
+        bar.append('rect');
+        bar.append('text');
+
+        bar.exit().remove();
+
+        bar.select('rect')
             .attr('width', function(d) { return xScale(d.score); })
             .attr('height', barHeight - 1)
             .attr('data-id', function(d) { return d._id; })
@@ -75,37 +84,14 @@ if (Meteor.isClient) {
             .on('mouseout', function() {
               d3.select(this)
                 .style('fill', 'steelblue');
-            });          
+            });
 
-        bar.transition()
-          .duration(500)
-          .attr('transform', function(d, i) {
-                return 'translate(0, '+ i * barHeight +')';
-            })
-          .attr('width', function(d) { return xScale(d.score); })
-
-          bar.exit()
-            .remove();
-
-        var label = svg.selectAll('text')
-          .data(dataset, key)
-
-        label.enter()
-          .append('text')
-          .attr('x', function(d) { return xScale(d.score) - 18; })
-          .attr('y', function(d, i) { return (i * barHeight) + barHeight / 2; })
-          .attr('dy', '.35em')
-          .style('font-size', '10px')
-          .text(function(d) { return d.score; });       
-
-        label.transition()
-          .duration(500)
-          .attr('x', function(d) { return xScale(d.score) - 18; })
-          .attr('y', function(d, i) { return (i * barHeight) + barHeight / 2; })
-          .attr('dy', '.35em')
-          .text(function(d) { return d.score; });
-
-        label.exit().remove();
+        bar.select('text')
+            .attr('x', function(d) { return xScale(d.score) - 18;})
+            .attr('y', barHeight / 2)
+            .attr('dy', '.35em')
+            .style('font-size', '10px')
+            .text(function(d) { return d.score; });
 
     });
   });
