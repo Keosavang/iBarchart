@@ -4,32 +4,43 @@
 </head>
 
 <body>
-  <h2>Welcome to Montreal's Meteor Hackathon!</h2>
-	<div class="row">
-		<div class="col-xs-3">
-		  {{> dashboard}}
-		</div>
+	<div class="container-fluid">
+	  <h2 class="title">Interactive Barchart</h2>
+		<h4 class="title">with D3 and Meteor</h4>
 
-		<div class="col-xs-9">
-			{{> barchart}}
-		</div>
+		<div class="row">
+			<div class="col-xs-3">
+			  {{> dashboard}}
+			</div>
+
+			<div class="col-xs-9">
+				{{> barchart}}
+			</div>
+		</div>		
 	</div>
 </body>
 
 <template name="dashboard">
-	<div class="addScore">
-		<h4>Add new score</h4>
-		Score:
-		<input type="number" id="adding-score" value="">
+	<div class="panel panel-primary">
+		<div class="panel-heading title">Add</div>
+		<div class="panel-body">
+			<label for="newscore">New Score:</label>
+			<input type="number" name="newscore" id="adding-score" class="form-control" value="">
+		</div>
 	</div>
 
-	<div class="selectScore">
-		<h4>Select</h4>
-		Score: 
-		<input type="number" id="edited" value="{{selected.score}}">
-		<button type="button" id="removing" class="btn btn-danger">Remove</button>
+	<div class="panel panel-danger">
+		<div class="panel-heading title">Select</div>
+		<div class="panel-body">
+			<label for="selection">Score:</label>
+			<input type="number" name="selection" id="edited" class="form-control" value="{{selected.score}}">
+		</div>
+		<ul class="list-group">
+			<li class="list-group-item">
+				<button type="button" id="removing" class="btn btn-xs btn-danger">Remove</button>
+			</li>
+		</ul>
 	</div>
-
 </template>
 
 <template name="barchart">

@@ -1,3 +1,6 @@
-/*rect:hover {
-	fill: orange;
-}*/
+.title {
+	text-align: center;
+}
+.bar:hover rect {
+	fill: orange !important;
+}
